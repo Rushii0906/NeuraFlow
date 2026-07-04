@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "tailwindcss";
+
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@theme {
+  --color-primary: #3d27bc;
+  --color-primary-pressed: #3e28bd;
+  --color-brand-navy: #0a1530;
+  --color-brand-navy-deep: #070f24;
+  --color-canvas: #fcf8ff;
+  --color-surface: #fcf8ff;
+  --color-surface-container: #f0ecf8;
+  --color-surface-container-low: #f6f2fe;
+  --color-surface-container-lowest: #ffffff;
+  --color-outline: #787586;
+  --color-outline-variant: #c8c4d7;
+  --color-on-surface: #1c1b23;
+  --color-on-surface-variant: #474554;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-canvas);
+  color: var(--color-on-surface);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Force JetBrains Mono on all headings */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Design System Glass/Border Panels */
+.glass-panel {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 4px 12px 0px;
+  border-radius: 12px;
+}
+
+.glass-panel-hover {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background-color: var(--color-surface-container-low);
+  border-color: var(--color-primary);
+  box-shadow: rgba(15, 15, 15, 0.08) 0px 6px 16px 0px;
+  transform: translateY(-2px);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at top right, rgba(61, 39, 188, 0.08), transparent), radial-gradient(circle at bottom left, #fcf8ff, transparent);
+}
+
+.glass-input {
+  background-color: #ffffff;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 8px;
+  color: var(--color-on-surface);
+  transition: all 0.15s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(61, 39, 188, 0.15);
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(61, 39, 188, 0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Category Accent Tints (Pastel) */
+.bg-tint-peach { background-color: #ffe8d4; }
+.bg-tint-rose { background-color: #fde0ec; }
+.bg-tint-mint { background-color: #d9f3e1; }
+.bg-tint-lavender { background-color: #e6e0f5; }
+.bg-tint-sky { background-color: #dcecfa; }
+.bg-tint-yellow { background-color: #fef7d6; }
+.bg-tint-yellow-bold { background-color: #f9e79f; }
+.bg-tint-cream { background-color: #f8f5e8; }
+.bg-tint-gray { background-color: #f0eeec; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-container);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* Custom animation for learning space nodes */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(61, 39, 188, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(61, 39, 188, 0.4);
+  }
+}
+
+.active-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Print Overrides */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .no-print, header, aside, nav, button {
+    display: none !important;
+  }
+  
+  main, .max-w-7xl, .lg\:col-span-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* Custom Prose styling for markdown content */
+.prose {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-on-surface);
+  line-height: 1.7;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--color-on-surface);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.prose h1 { 
+  font-size: 1.35rem; 
+  border-bottom: 1px solid var(--color-outline-variant); 
+  padding-bottom: 0.25rem; 
+  margin-top: 2rem;
+}
+.prose h2 { font-size: 1.15rem; }
+.prose h3 { font-size: 1rem; }
+
+.prose p {
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.prose ul, .prose ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.35rem;
+}
+
+.prose code {
+  font-family: 'JetBrains Mono', monospace;
+  background-color: var(--color-surface-container);
+  padding: 0.15rem 0.3rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.prose pre {
+  background-color: var(--color-brand-navy);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.prose pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.75rem;
+}
+
+.prose strong {
+  font-weight: 700;
+  color: var(--color-primary);
+}

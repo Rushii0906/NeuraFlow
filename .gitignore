@@ -1,0 +1,61 @@
+# IDE / Editor configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Virtual environments
+backend/.venv/
+.venv/
+venv/
+ENV/
+
+# Python Cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Local databases
+backend/instance/
+instance/
+*.db
+*.sqlite
+
+# Environment variables & secrets (CRITICAL FOR SECURITY)
+.env
+.env*.local
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Dependency directories
+node_modules/
+jspm_packages/
+web_modules/
+
+# Production builds
+frontend/dist/
+frontend/dist-ssr/
+out/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
