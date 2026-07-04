@@ -9,8 +9,23 @@ export const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { login, loginAsGuest } = useAuth();
   const navigate = useNavigate();
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
+
+  const handleGuestLogin = async () => {
+    setIsGuestLoading(true);
+    setError(null);
+    try {
+      await loginAsGuest();
+      navigate('/dashboard');
+    } catch (err: any) {
+      console.error('Guest login failed:', err);
+      setError(err.response?.data?.error || 'Failed to enter guest demo mode.');
+    } finally {
+      setIsGuestLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,7 +140,7 @@ export const Login: React.FC = () => {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isGuestLoading}
               className="w-full bg-primary hover:bg-primary-pressed text-white font-bold text-xs py-3.5 rounded-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? (
@@ -135,6 +150,29 @@ export const Login: React.FC = () => {
               )}
             </button>
           </form>
+
+          {/* Recruiter Quick Access */}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#e5e3df]"></div>
+            </div>
+            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-wider">
+              <span className="bg-surface-container-lowest px-4 text-outline">Recruiter demo</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGuestLogin}
+            disabled={isGuestLoading || isSubmitting}
+            className="w-full bg-[#f6f5f4] hover:bg-[#ede9e4] border border-[#e5e3df] text-[#1a1a1a] font-bold text-xs py-3.5 rounded-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+          >
+            {isGuestLoading ? (
+              <RefreshCw size={16} className="animate-spin" />
+            ) : (
+              <span>Explore as Guest (Instant Login)</span>
+            )}
+          </button>
 
           {/* Divider */}
           <div className="relative my-8">

@@ -14,6 +14,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginAsGuest: () => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -71,6 +72,24 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const loginAsGuest = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.post('/auth/guest-login');
+      const { access_token, user: loggedUser } = response.data;
+      
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('user', JSON.stringify(loggedUser));
+      
+      setToken(access_token);
+      setUser(loggedUser);
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
@@ -98,6 +117,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         isAuthenticated: !!token,
         isLoading,
         login,
+        loginAsGuest,
         register,
         logout,
       }}

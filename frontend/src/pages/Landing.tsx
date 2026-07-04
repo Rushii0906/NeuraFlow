@@ -4,8 +4,9 @@ import { Brain, Sparkles, CheckCircle2, Star, Award } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 export const Landing: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loginAsGuest } = useAuth();
   const navigate = useNavigate();
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
   
   // State for FAQ toggles
   const [faqOpen, setFaqOpen] = useState<Record<number, boolean>>({});
@@ -15,6 +16,19 @@ export const Landing: React.FC = () => {
       navigate('/dashboard');
     } else {
       navigate('/register');
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    setIsGuestLoading(true);
+    try {
+      await loginAsGuest();
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Failed to log in as guest:', err);
+      alert('Failed to enter guest demo mode. Please register an account.');
+    } finally {
+      setIsGuestLoading(false);
     }
   };
 
@@ -80,6 +94,13 @@ export const Landing: React.FC = () => {
             </Link>
           ) : (
             <>
+              <button 
+                onClick={handleGuestLogin}
+                disabled={isGuestLoading}
+                className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors px-3 py-2 disabled:opacity-50 cursor-pointer"
+              >
+                {isGuestLoading ? 'Loading...' : 'Guest Demo'}
+              </button>
               <Link to="/login" className="text-xs font-semibold text-on-surface-variant hover:text-primary transition-colors px-3 py-2">
                 Log in
               </Link>
@@ -120,6 +141,13 @@ export const Landing: React.FC = () => {
                 className="w-full sm:w-auto px-8 py-3.5 bg-primary text-white rounded-xl font-semibold text-sm hover:shadow-xl hover:-translate-y-0.5 transition-all active:scale-95 cursor-pointer"
               >
                 Start Learning Free
+              </button>
+              <button 
+                onClick={handleGuestLogin}
+                disabled={isGuestLoading}
+                className="w-full sm:w-auto px-8 py-3.5 bg-[#ede9e4] border border-[#e5e3df] text-[#1a1a1a] rounded-xl font-semibold text-sm hover:bg-[#ede9e4]/80 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+              >
+                {isGuestLoading ? 'Loading Recruiter Demo...' : 'Explore as Recruiter (Guest)'}
               </button>
               <a 
                 href="#explore"

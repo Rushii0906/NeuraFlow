@@ -80,3 +80,27 @@ def profile():
     return jsonify({
         "user": user.to_dict()
     }), 200
+
+
+@auth_bp.route('/guest-login', methods=['POST'])
+def guest_login():
+    guest_email = "guest@neuraflow.com"
+    user = User.query.filter_by(email=guest_email).first()
+
+    if not user:
+        try:
+            user = User(name="Guest Recruiter", email=guest_email)
+            user.set_password("guest123")
+            db.session.add(user)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": "Failed to create guest account", "details": str(e)}), 500
+
+    access_token = create_access_token(identity=str(user.id))
+    return jsonify({
+        "message": "Logged in as guest successfully",
+        "access_token": access_token,
+        "user": user.to_dict()
+    }), 200
+

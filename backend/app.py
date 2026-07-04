@@ -15,6 +15,10 @@ def create_app(config_class=Config):
     # Initialize SQLAlchemy database
     db.init_app(app)
     
+    # Auto-create tables in production/development on startup
+    with app.app_context():
+        db.create_all()
+        
     # Initialize JWT Manager
     jwt = JWTManager(app)
     
@@ -47,6 +51,4 @@ def create_app(config_class=Config):
 
 if __name__ == "__main__":
     app = create_app()
-    with app.app_context():
-        db.create_all()  # Auto-creates SQLite tables if they do not exist
     app.run(host="0.0.0.0", port=5000, debug=True)
