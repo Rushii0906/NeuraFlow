@@ -44,8 +44,8 @@ export const Landing: React.FC = () => {
       <header className="sticky top-0 z-50 flex justify-between items-center px-6 md:px-12 py-4 w-full bg-surface/80 backdrop-blur-md border-b border-outline-variant">
         <div className="flex items-center gap-8">
           <Link to="/" className="flex items-center gap-2.5 hover:opacity-90">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white">
-              <Brain size={18} />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white border border-outline-variant overflow-hidden">
+              <img src="/logo.png" className="w-6 h-6 object-contain" alt="NeuraFlow Logo" />
             </div>
             <span className="font-display-lg text-[22px] font-bold text-primary tracking-tight font-heading">
               NeuraFlow AI

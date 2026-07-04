@@ -33,8 +33,8 @@ export const DashboardLayout: React.FC = () => {
         <div>
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2.5 mb-10 hover:opacity-90">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#3d27bc] text-white">
-              <Brain size={18} />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white border border-[#e5e3df] overflow-hidden">
+              <img src="/logo.png" className="w-6 h-6 object-contain" alt="NeuraFlow Logo" />
             </div>
             <span className="text-lg font-bold tracking-tight font-['Outfit'] text-[#1a1a1a]">
               NeuraFlow AI
@@ -92,8 +92,8 @@ export const DashboardLayout: React.FC = () => {
           <div className="flex items-center space-x-4">
             {/* Mobile Logo */}
             <Link to="/" className="flex items-center space-x-2 md:hidden">
-              <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#3d27bc] text-white">
-                <Brain size={14} />
+              <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-white border border-[#e5e3df] overflow-hidden">
+                <img src="/logo.png" className="w-5 h-5 object-contain" alt="NeuraFlow Logo" />
               </div>
             </Link>
             

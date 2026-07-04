@@ -28,8 +28,8 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({
       <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-orange-100 rounded-full blur-3xl -z-10 opacity-50"></div>
 
       <div className="relative mb-6">
-        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl border border-[#3d27bc]/20 bg-[#3d27bc]/5 text-[#3d27bc] shadow-sm">
-          <Brain size={40} className="animate-pulse" />
+        <div className="relative flex items-center justify-center w-20 h-20 rounded-2xl border border-[#e5e3df] bg-white shadow-sm overflow-hidden">
+          <img src="/logo.png" className="w-14 h-14 object-contain animate-pulse" alt="NeuraFlow Logo" />
         </div>
       </div>
 

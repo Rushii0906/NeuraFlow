@@ -55,8 +55,8 @@ export const Register: React.FC = () => {
         {/* Brand Identity */}
         <div className="flex flex-col items-center text-center">
           <Link to="/" className="flex flex-col items-center group">
-            <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-xl mb-4 shadow-sm text-white group-hover:scale-105 transition-transform">
-              <Brain size={28} />
+            <div className="w-12 h-12 bg-white border border-outline-variant flex items-center justify-center rounded-xl mb-4 shadow-sm group-hover:scale-105 transition-transform overflow-hidden">
+              <img src="/logo.png" className="w-9 h-9 object-contain" alt="NeuraFlow Logo" />
             </div>
             <h1 className="font-headline-md text-2xl font-bold tracking-tight font-heading">NeuraFlow AI</h1>
           </Link>
