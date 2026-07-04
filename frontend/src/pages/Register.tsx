@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Brain, User, Mail, Lock, AlertCircle, RefreshCw } from 'lucide-react';
+import { User, Mail, Lock, AlertCircle, RefreshCw } from 'lucide-react';
 
 export const Register: React.FC = () => {
   const [name, setName] = useState('');

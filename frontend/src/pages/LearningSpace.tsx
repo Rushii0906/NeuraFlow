@@ -2,8 +2,8 @@ import { useState, useEffect, type FC } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { 
-  ArrowLeft, CheckCircle2, Circle, Award, 
-  HelpCircle, Printer, AlertCircle, RefreshCw, ChevronDown, ChevronUp, EyeOff, Lock, Clock
+  ArrowLeft, CheckCircle2, 
+  HelpCircle, AlertCircle, RefreshCw, ChevronDown, ChevronUp, EyeOff, Lock, Clock
 } from 'lucide-react';
 import api from '../services/api';
 import GlassCard from '../components/GlassCard';
@@ -19,19 +19,6 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
-interface RoadmapNode {
-  id: number;
-  title: string;
-  description: string;
-  order: number;
-  is_completed: boolean;
-  quiz_score: number | null;
-  difficulty: string;
-  estimated_time: string;
-  resources: Array<{ title: string; url: string }>;
-  prerequisites: number[];
-  is_unlocked: boolean;
-}
 
 interface Material {
   beginner_notes: string;
@@ -198,9 +185,10 @@ const IllustrationCard: FC<IllustrationCardProps> = ({
 };
 
 const CustomNode: FC<NodeProps> = ({ data }) => {
-  const isCompleted = data.is_completed;
-  const isUnlocked = data.is_unlocked;
-  const quizScore = data.quiz_score;
+  const nodeData = data as any;
+  const isCompleted = nodeData.is_completed;
+  const isUnlocked = nodeData.is_unlocked;
+  const quizScore = nodeData.quiz_score;
 
   let cardStyle = "border-[#e5e3df] bg-white hover:border-[#3d27bc]/40 text-[#1a1a1a]";
   let statusBadge = null;
@@ -232,7 +220,7 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
     Beginner: "bg-emerald-50 text-emerald-600 border border-emerald-100",
     Intermediate: "bg-amber-50 text-amber-600 border border-amber-100",
     Advanced: "bg-rose-50 text-rose-600 border border-rose-100"
-  }[data.difficulty as string] || "bg-gray-50 text-gray-600";
+  }[nodeData.difficulty as string] || "bg-gray-50 text-gray-600";
 
   return (
     <div className="relative">
@@ -246,23 +234,23 @@ const CustomNode: FC<NodeProps> = ({ data }) => {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${difficultyColors}`}>
-              {data.difficulty}
+              {nodeData.difficulty}
             </span>
             {statusBadge}
           </div>
 
           <div>
             <h4 className="text-xs font-bold font-['Outfit'] truncate">
-              {data.order}. {data.title}
+              {nodeData.order}. {nodeData.title}
             </h4>
             <p className="text-[9px] text-[#787671] line-clamp-2 mt-0.5 leading-relaxed">
-              {data.description}
+              {nodeData.description}
             </p>
           </div>
 
           <div className="flex justify-between items-center pt-1 border-t border-[#e5e3df]/40 text-[9px] text-[#787671] font-semibold">
             <span className="flex items-center gap-1">
-              <Clock size={10} /> {data.estimated_time}
+              <Clock size={10} /> {nodeData.estimated_time}
             </span>
             {quizScore !== null && (
               <span className="text-[#1aae39] font-bold">
@@ -291,8 +279,8 @@ export const LearningSpace: FC = () => {
   
   // Topic and Roadmap state
   const [topic, setTopic] = useState<{ id: number; title: string; status: string } | null>(null);
-  const [flowNodes, setFlowNodes, onNodesChange] = useNodesState([]);
-  const [flowEdges, setFlowEdges, onEdgesChange] = useEdgesState([]);
+  const [flowNodes, setFlowNodes, onNodesChange] = useNodesState<any>([]);
+  const [flowEdges, setFlowEdges, onEdgesChange] = useEdgesState<any>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null);
   
   // Selected Node detailed content state
@@ -650,10 +638,6 @@ export const LearningSpace: FC = () => {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   const toggleAnswerReveal = (qaId: number) => {
     setRevealedAnswers(prev => ({ ...prev, [qaId]: !prev[qaId] }));
   };
@@ -788,7 +772,7 @@ export const LearningSpace: FC = () => {
     return <div className="space-y-4">{renderedElements}</div>;
   };
 
-  const handleNodeClick = (event: React.MouseEvent, node: any) => {
+  const handleNodeClick = (_event: React.MouseEvent, node: any) => {
     const isUnlocked = node.data.is_unlocked;
     if (!isUnlocked) {
       const prereqIds = node.data.prerequisites || [];
@@ -836,6 +820,13 @@ export const LearningSpace: FC = () => {
           💡 Click any unlocked node to view study guides, quizzes, and diagrams.
         </div>
       </div>
+
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-semibold flex items-center gap-2 no-print">
+          <AlertCircle size={16} />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Main React Flow Canvas */}
       <GlassCard className="relative w-full h-[650px] border-[#e5e3df] bg-white shadow-sm overflow-hidden flex flex-col">
@@ -943,6 +934,13 @@ export const LearningSpace: FC = () => {
 
           {/* Side Panel Body Scrollable Content */}
           <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-white space-y-6">
+            {isNodeLoading ? (
+              <div className="flex flex-col items-center justify-center py-20 text-[#3d27bc]">
+                <RefreshCw className="animate-spin mb-3" size={32} />
+                <p className="text-xs font-semibold text-[#787671]">Fetching learning resources...</p>
+              </div>
+            ) : (
+              <>
             
             {(activeTab === 'beginner' || activeTab === 'detailed' || activeTab === 'revision') && !isNotesGenerating && !isNotesFailed && (
               <div className="flex justify-between items-center bg-gray-50 border border-[#e5e3df] p-3.5 rounded-xl text-xs">
@@ -1223,6 +1221,8 @@ export const LearningSpace: FC = () => {
                   ))}
                 </div>
               </div>
+            )}
+              </>
             )}
           </div>
         </div>
