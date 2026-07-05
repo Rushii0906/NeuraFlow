@@ -204,7 +204,7 @@ export const Dashboard: React.FC = () => {
       </GlassCard>
 
       {/* Stats Counter Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <GlassCard className="flex items-center space-x-4 bg-white border-[#e5e3df] p-5 shadow-sm">
           <div className="p-3 rounded-lg bg-[#ffe8d4] text-[#dd5b00]">
             <Brain size={20} />
@@ -241,9 +241,9 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Main Body Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Active Learning Paths */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="md:col-span-2 lg:col-span-2 space-y-6 font-semibold">
           <h3 className="text-sm font-bold uppercase tracking-wider text-[#787671]">Your Study Pathways</h3>
 
           <div className="space-y-3">
@@ -330,7 +330,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Activity Timeline */}
-        <div className="space-y-6">
+        <div className="md:col-span-2 lg:col-span-1 space-y-6">
           <h3 className="text-sm font-bold uppercase tracking-wider text-[#787671] flex items-center space-x-2">
             <Clock size={16} />
             <span>Recent Activity</span>

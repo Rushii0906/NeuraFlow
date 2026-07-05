@@ -49,9 +49,9 @@ export const Profile: FC = () => {
         <p className="text-sm text-[#787671]">Manage your credentials and track your metrics.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Left Side: Profile Card */}
-        <div className="md:col-span-1 space-y-6">
+        <div className="md:col-span-2 lg:col-span-1 space-y-6 font-semibold">
           <GlassCard className="text-center space-y-4 bg-white border-[#e5e3df] p-6 shadow-sm">
             <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center font-bold text-white text-3xl mx-auto shadow-lg shadow-purple-500/20">
               {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -78,7 +78,7 @@ export const Profile: FC = () => {
         </div>
 
         {/* Right Side: Performance stats */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-2 lg:col-span-2 space-y-6">
           <GlassCard className="space-y-6 bg-white border-[#e5e3df] p-6 shadow-sm">
             <h3 className="text-sm font-bold text-[#787671] uppercase tracking-wider flex items-center space-x-2 border-b border-[#e5e3df] pb-3">
               <BarChart2 size={16} className="text-[#3d27bc]" />

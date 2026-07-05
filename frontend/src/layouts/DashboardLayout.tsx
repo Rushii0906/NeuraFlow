@@ -102,35 +102,7 @@ export const DashboardLayout: React.FC = () => {
             </h1>
           </div>
 
-          {/* Mobile Top Navigation Navigation Links */}
           <div className="flex items-center space-x-2 md:space-x-4">
-            <div className="flex items-center space-x-1.5 md:hidden mr-2">
-              {menuItems.map((item) => {
-                const isActive = location.pathname === item.path;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`flex items-center space-x-1 px-2 py-1 rounded-md text-[10px] font-bold transition-all ${
-                      isActive
-                        ? 'bg-[#3d27bc]/10 text-[#3d27bc]'
-                        : 'text-[#787671] hover:text-[#1a1a1a]'
-                    }`}
-                  >
-                    {item.icon}
-                    <span className="hidden sm:inline">{item.label}</span>
-                  </Link>
-                );
-              })}
-              <button
-                onClick={handleLogout}
-                className="p-1 rounded-md text-[#787671] hover:bg-red-50 hover:text-red-600 transition-colors"
-                title="Logout"
-              >
-                <LogOut size={14} />
-              </button>
-            </div>
-
             <Link
               to="/"
               className="text-[10px] md:text-[11px] text-[#3d27bc] font-bold px-2.5 py-1.5 rounded-lg border border-[#3d27bc]/20 bg-[#3d27bc]/5 hover:bg-[#3d27bc]/10 transition-all no-print"
@@ -141,10 +113,36 @@ export const DashboardLayout: React.FC = () => {
         </header>
 
         {/* Content Body */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-20 md:pb-8">
           <Outlet />
         </main>
       </div>
+
+      {/* Bottom Navigation Bar - Visible on Mobile Only (< 768px) */}
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-[#e5e3df] flex justify-around items-center z-50 md:hidden no-print">
+        {menuItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex flex-col items-center justify-center flex-1 h-full py-2 transition-all ${
+                isActive ? 'text-[#3d27bc]' : 'text-[#787671]'
+              }`}
+            >
+              {item.icon}
+              <span className="text-[10px] font-bold mt-1">{item.label}</span>
+            </Link>
+          );
+        })}
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center justify-center flex-1 h-full py-2 text-[#787671] hover:text-red-600 transition-colors"
+        >
+          <LogOut size={16} />
+          <span className="text-[10px] font-bold mt-1">Logout</span>
+        </button>
+      </nav>
     </div>
   );
 };
