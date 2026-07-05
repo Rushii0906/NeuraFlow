@@ -109,7 +109,11 @@ class RoadmapGenerationService:
         
         # 3. Launch thread
         app_context = current_app._get_current_object()
-        thread = threading.Thread(target=run_agent_workflow, args=(app_context, state))
-        thread.start()
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            run_agent_workflow(app_context, state)
+        else:
+            thread = threading.Thread(target=run_agent_workflow, args=(app_context, state))
+            thread.start()
         
         return topic.id

@@ -93,14 +93,23 @@ def generate():
                         RoadmapRepository.rollback()
 
         app_context = current_app._get_current_object()
-        thread = threading.Thread(target=run_roadmap_gen, args=(app_context, topic.id, topic_title))
-        thread.start()
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            run_roadmap_gen(app_context, topic.id, topic_title)
+            return jsonify({
+                "message": "Learning pathway generation completed",
+                "topic_id": topic.id,
+                "status": "completed"
+            }), 200
+        else:
+            thread = threading.Thread(target=run_roadmap_gen, args=(app_context, topic.id, topic_title))
+            thread.start()
 
-        return jsonify({
-            "message": "Learning pathway generation initiated",
-            "topic_id": topic.id,
-            "status": "generating"
-        }), 202
+            return jsonify({
+                "message": "Learning pathway generation initiated",
+                "topic_id": topic.id,
+                "status": "generating"
+            }), 202
 
     except Exception as e:
         return jsonify({"error": "Failed to create generation pipeline", "details": str(e)}), 500
@@ -362,19 +371,27 @@ def regenerate_illustration(illustration_id):
         ill.image_url = None
         db.session.commit()
         
-        # Trigger background image generation
+        # Trigger background image generation (or run synchronously in serverless/Vercel)
         from backend.agents.graph import generate_illustration_images_background
         app_context = current_app._get_current_object()
-        thread = threading.Thread(
-            target=generate_illustration_images_background,
-            args=(app_context, ill.topic_id)
-        )
-        thread.start()
-        
-        return jsonify({
-            "message": "Illustration regeneration started",
-            "illustration": ill.to_dict()
-        }), 200
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            generate_illustration_images_background(app_context, ill.topic_id)
+            return jsonify({
+                "message": "Illustration regenerated successfully",
+                "illustration": ill.to_dict()
+            }), 200
+        else:
+            thread = threading.Thread(
+                target=generate_illustration_images_background,
+                args=(app_context, ill.topic_id)
+            )
+            thread.start()
+            
+            return jsonify({
+                "message": "Illustration regeneration started",
+                "illustration": ill.to_dict()
+            }), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Failed to trigger regeneration", "details": str(e)}), 500

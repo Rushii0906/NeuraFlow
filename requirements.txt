@@ -1,0 +1,10 @@
+flask==3.0.3
+flask-cors==4.0.1
+flask-sqlalchemy==3.1.1
+flask-jwt-extended==4.6.0
+python-dotenv==1.0.1
+google-generativeai==0.8.3
+langgraph
+pydantic==2.8.2
+psycopg2-binary==2.9.9
+cryptography==42.0.8

@@ -200,13 +200,17 @@ def generate_illustrations_node(state: GraphState) -> Dict[str, Any]:
         db.session.commit()
         logger.info(f"Planned {len(illustrations_list)} illustrations for topic {topic_id}")
         
-        # Launch background image generation thread
+        # Launch background image generation thread (or run synchronously in serverless/Vercel)
         app_context = current_app._get_current_object()
-        thread = threading.Thread(
-            target=generate_illustration_images_background, 
-            args=(app_context, topic_id)
-        )
-        thread.start()
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            generate_illustration_images_background(app_context, topic_id)
+        else:
+            thread = threading.Thread(
+                target=generate_illustration_images_background, 
+                args=(app_context, topic_id)
+            )
+            thread.start()
         
     except Exception as e:
         logger.error(f"Error in generate_illustrations_node for topic {topic_id}: {e}")

@@ -224,9 +224,14 @@ class GenerationManager:
             logger.error(f"Unknown job type: {job_type}")
             return job.id
             
-        thread = threading.Thread(
-            target=target_fn,
-            args=(app_context, topic_id, node_id, job.id)
-        )
-        thread.start()
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            logger.info(f"Running job '{job_type}' synchronously for Node ID {node_id}")
+            target_fn(app_context, topic_id, node_id, job.id)
+        else:
+            thread = threading.Thread(
+                target=target_fn,
+                args=(app_context, topic_id, node_id, job.id)
+            )
+            thread.start()
         return job.id

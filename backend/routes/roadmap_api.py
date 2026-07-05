@@ -58,14 +58,23 @@ def generate_roadmap():
                         RoadmapRepository.rollback()
 
         app_context = current_app._get_current_object()
-        thread = threading.Thread(target=run_roadmap_gen, args=(app_context, topic.id, topic_title))
-        thread.start()
+        import os
+        if os.getenv("SYNC_GENERATION", "false").lower() == "true":
+            run_roadmap_gen(app_context, topic.id, topic_title)
+            return jsonify({
+                "message": "Learning roadmap generation completed",
+                "topic_id": topic.id,
+                "status": "completed"
+            }), 200
+        else:
+            thread = threading.Thread(target=run_roadmap_gen, args=(app_context, topic.id, topic_title))
+            thread.start()
 
-        return jsonify({
-            "message": "Learning roadmap generation initiated",
-            "topic_id": topic.id,
-            "status": "generating"
-        }), 202
+            return jsonify({
+                "message": "Learning roadmap generation initiated",
+                "topic_id": topic.id,
+                "status": "generating"
+            }), 202
     except Exception as e:
         logger.error(f"Failed to start roadmap generation: {e}")
         return jsonify({"error": "Failed to start learning path generation", "details": str(e)}), 500
